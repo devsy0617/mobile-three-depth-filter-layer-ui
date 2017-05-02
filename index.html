@@ -1,0 +1,194 @@
+<html>
+<head>
+    <title>three-depth-filter-layer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/ui_script.js"></script>
+</head>
+
+<style>
+    body {
+        margin: 0;
+    }
+
+    .layer-btn {
+        width: 200px;
+        background-color: #ddd;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        padding: 5px;
+        margin: 30px auto;
+        border: 3px solid;
+    }
+
+    .layer {
+        display: none;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: pink;
+    }
+
+    .active {
+        display: block;
+    }
+
+    /*layer fotter btn area*/
+    .filter_layer_footer_btn {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: #373a41;
+        z-index: 999999;
+    }
+
+    .filter_layer_footer_btn_items {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .filter_layer_footer_btn_item {
+        display: inline-block;
+        float: left;
+        width: 33.3%;
+        height: 100%;
+    }
+
+    .filter_layer_footer_btn_item_anchor {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        font-size: 16px;
+        line-height: 20px;
+        color: #ffffff;
+        text-align: center;
+    }
+
+    .filter_layer_footer_btn_item_anchor:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+</style>
+<body>
+<div class="layer-btn" onclick="filter.layerOpen();">three-depth-layer</div>
+
+
+<!-- 검색 레이어 -->
+<div class="layer">
+    <div class="filter_layer_wrap">
+        <div class="gym_filter_layer_title">
+            <span>검색 옵션 선택</span>
+        </div>
+
+        <div class="gym_filter_layer_search_keyword">
+            <div class="gym_filter_layer_search_keyword_title"><span>검색</span></div>
+            <div class="gym_filter_layer_search_keyword_input">
+                <input type="text" name="search_keyword" id="search-area-input" placeholder="검색어를 입력하세요"
+                       value="{htmlspecialchars($search_keyword)}">
+            </div>
+        </div>
+
+        <div class="gym_filter_layer_option">
+            <div class="gym_filter_layer_option_title">
+                <span>옵션선택</span>
+            </div>
+        </div>
+
+        <div class="gym_filter_layer_tab">
+            <ul class="gym_filter_layer_tab_items">
+                <li class="gym_filter_layer_tab_item active"><a href="#" class="gym_filter_layer_tab_item_anchor"
+                                                                data-type="area"
+                                                                onclick="_Filter.filterTabFunc(this);return false;"><span
+                        class="gym_filter_layer_tab_item_anchor_txt">지역</span><span
+                        class="gym_filter_layer_tab_item_anchor_pipe"></span></a></li>
+                <li class="gym_filter_layer_tab_item"><a href="#" class="gym_filter_layer_tab_item_anchor"
+                                                         data-type="type"
+                                                         onclick="_Filter.filterTabFunc(this);return false;"><span
+                        class="gym_filter_layer_tab_item_anchor_txt">유형</span><span
+                        class="gym_filter_layer_tab_item_anchor_pipe"></span></a></li>
+                <li class="gym_filter_layer_tab_item"><a href="#" class="gym_filter_layer_tab_item_anchor"
+                                                         data-type="subway"
+                                                         onclick="_Filter.filterTabFunc(this);return false;"><span
+                        class="gym_filter_layer_tab_item_anchor_txt">지하철노선</span><span
+                        class="gym_filter_layer_tab_item_anchor_pipe"></span></a></li>
+            </ul>
+
+            <a href="#" class="gym_filter_layer_close_btn" onclick="_Filter.contentInit();return false;">
+                <i class="gym_filter_layer_close_btn_ico"></i>
+                <em class="none">체육관 검색 레이어 초기화</em>
+            </a>
+        </div>
+    </div>
+
+    <div class="gym_filter_layer_content">
+        <div class="gym_filter_layer_content_groups active" data-type="area">
+            <div class="gym_filter_layer_content_group" data-depth="1">
+                <ul class="gym_filter_layer_content_items">
+                </ul>
+            </div>
+            <div class="gym_filter_layer_content_group" data-depth="2">
+                <ul class="gym_filter_layer_content_items">
+                </ul>
+            </div>
+            <div class="gym_filter_layer_content_group" data-depth="3">
+                <ul class="gym_filter_layer_content_items">
+                </ul>
+            </div>
+        </div>
+
+        <div class="gym_filter_layer_content_groups" data-type="type">
+            <div class="gym_filter_layer_content_group" data-type="kind" data-depth="1">
+            </div>
+
+            <div class="gym_filter_layer_content_group" data-type="operation" data-depth="1">
+            </div>
+
+            <div class="gym_filter_layer_content_group" data-type="size" data-depth="1">
+            </div>
+        </div>
+
+        <div class="gym_filter_layer_content_groups" data-type="subway">
+            <div class="gym_filter_layer_content_group" data-depth="1">
+            </div>
+
+            <div class="gym_filter_layer_content_group" data-depth="2">
+            </div>
+
+            <div class="gym_filter_layer_content_group" data-depth="3">
+            </div>
+        </div>
+    </div>
+
+    <div class="filter_layer_footer_btn">
+        <ul class="filter_layer_footer_btn_items">
+            <li class="filter_layer_footer_btn_item">
+                <a href="#" class="filter_layer_footer_btn_item_anchor"
+                   onclick="_Filter.layerClose();return false;">닫기</a>
+            </li>
+            <li class="filter_layer_footer_btn_item">
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray"
+                   onclick="_Filter.layerSearchFilter();return false;">초기화</a>
+            </li>
+            <li class="filter_layer_footer_btn_item">
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray"
+                   onclick="_Filter.layerSearchFilter();return false;">검색</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- //검색 레이어 -->
+
+</body>
+</html>

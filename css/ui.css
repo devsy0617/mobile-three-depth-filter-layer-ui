@@ -61,6 +61,7 @@ body {
     line-height: 20px;
     color: #ffffff;
     text-align: center;
+    text-decoration: none;
 }
 
 .filter_layer_footer_btn_item_anchor:before {

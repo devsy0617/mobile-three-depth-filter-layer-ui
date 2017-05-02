@@ -1,11 +1,9 @@
 <html>
 <head>
-    <title>three-depth-filter-layer</title>
+    <title>mobile-three-depth-filter-layer-ui</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" type="text/css" href="css/ui.css">
-
     <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/ui_script.js"></script>
 </head>
@@ -14,27 +12,92 @@
 <div class="layer-btn" onclick="filter.layerOpen();">three-depth-layer</div>
 
 
-<!-- 검색 레이어 -->
-<div class="layer">
-    
+<!-- 검색 레이어 시작 -->
+<div class="filter_layer">
+
+    <!-- 레이어 내부 영역 시작 -->
+    <div class="filter_layer_wrap">
+        <div class="filter_layer_title">
+            <span>필터</span>
+        </div>
+
+        <!-- 탭 영역 시작 -->
+        <div class="filter_layer_tab">
+            <ul class="filter_layer_tab_items">
+                <li class="filter_layer_tab_item active">
+                    <a href="#" class="filter_layer_tab_item_anchor" data-type="area" onclick="filter.filterTabFunc(this);return false;">
+                        <span class="filter_layer_tab_item_anchor_txt">지역</span>
+                        <span class="filter_layer_tab_item_anchor_pipe"></span>
+                    </a>
+                </li>
+
+                <li class="filter_layer_tab_item">
+                    <a href="#" class="filter_layer_tab_item_anchor" data-type="subway" onclick="filter.filterTabFunc(this);return false;">
+                        <span class="filter_layer_tab_item_anchor_txt">지하철</span>
+                        <span class="filter_layer_tab_item_anchor_pipe"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 탭 영역 끝 -->
+
+        <!-- 탭 콘텐츠 영역 시작 -->
+        <div class="filter_layer_content">
+            <div class="filter_layer_content_groups active" data-type="area">
+                <div class="filter_layer_content_group" data-depth="1">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+                <div class="filter_layer_content_group" data-depth="2">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+                <div class="filter_layer_content_group" data-depth="3">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="filter_layer_content_groups" data-type="subway">
+                <div class="filter_layer_content_group" data-depth="1">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+
+                <div class="filter_layer_content_group" data-depth="2">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+
+                <div class="filter_layer_content_group" data-depth="3">
+                    <ul class="filter_layer_content_items">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 탭 콘텐츠 영역 끝 -->
+
+    </div>
+    <!-- 레이어 내부 영역 끝 -->
+
+
+    <!-- 레이어 바닥 버튼 영역 시작 -->
     <div class="filter_layer_footer_btn">
         <ul class="filter_layer_footer_btn_items">
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor"
-                   onclick="filter.layerClose();return false;">닫기</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor" onclick="filter.layerClose();return false;">닫기</a>
             </li>
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor gray"
-                   onclick="filter.layerInit();return false;">초기화</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="filter.layerInit();return false;">초기화</a>
             </li>
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor gray"
-                   onclick="filter.layerSearch();return false;">검색</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="filter.layerSearch();return false;">검색</a>
             </li>
         </ul>
     </div>
+    <!-- 레이어 바닥 버튼 영역 끝 -->
 </div>
-<!-- //검색 레이어 -->
+<!-- 검색 레이어 끝 -->
 
 </body>
 </html>

@@ -1,40 +1,199 @@
+/* common area */
 body {
     margin: 0;
 }
 
 .layer-btn {
     width: 200px;
-    background-color: #ddd;
+    background-color: #244aa0;
     border-radius: 5px;
     font-size: 20px;
     font-weight: 600;
+    color: #fff;
     text-align: center;
     padding: 5px;
     margin: 30px auto;
-    border: 3px solid;
+    border: 3px solid #a2a2a2;
 }
 
-.layer {
-    display: none;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: pink;
+.filter_layer {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: #ffffff;
+    z-index:999999;
+}
+
+.filter_layer_wrap {
+    position:relative;
+    width:100%;
+    height:auto;
+}
+
+.filter_layer_title {
+    display:inline-block;
+    width:100%;
+    height:50px;
+    margin:0;
+    padding:0;
+    background:#244aa0;
+    text-align:center;
+}
+
+.filter_layer_title span {
+    font-size:18px;
+    line-height:24px;
+    color:#ffffff;
+}
+
+.filter_layer_title span:before {
+    content:'';
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
 }
 
 .active {
     display: block;
 }
 
-/*layer fotter btn area*/
+
+/* layer tab btn area */
+.filter_layer_tab {
+    position:relative;
+    display:block;
+    width:100%;
+    height:45px;
+    border-bottom:1px solid #dddddd;
+}
+
+.filter_layer_tab_items {
+    list-style:none;
+    clear:both;
+    display:inline-block;
+    width:auto;
+    height:100%;
+    margin:0;
+    padding:0;
+}
+
+.filter_layer_tab_item {
+    float:left;
+    width:auto;
+    height:100%;
+}
+
+.filter_layer_tab_item_anchor {
+    position:relative;
+    display:inline-block;
+    width:auto;
+    height:100%;
+    font-size:18px;
+    line-height:16px;
+    color:#565656;
+    margin:0;
+    padding:0;
+    text-decoration: none;
+}
+
+.filter_layer_tab_item_anchor .filter_layer_tab_item_anchor_txt {
+    margin:0 10px;
+    padding:5px 10px;
+}
+
+.filter_layer_tab_item_anchor .filter_layer_tab_item_anchor_pipe {
+    position:absolute;
+    top:15px;
+    right:0;
+    width:1px;
+    height:12px;
+    background:#989898;
+}
+
+.filter_layer_tab_item_anchor .filter_layer_tab_item_anchor_txt:before {
+    content:'';
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+
+.filter_layer_tab_item.active .filter_layer_tab_item_anchor .filter_layer_tab_item_anchor_txt {
+    font-weight: 600;
+}
+
+/* layer tab content btn area */
+.filter_layer_content {
+    display:block;
+    clear:both;
+    width:100%;
+    height:auto;
+    overflow:hidden;
+}
+
+.filter_layer_content_groups {
+    clear:both;
+    height:100%;
+}
+
+.filter_layer_content_group {
+    float:left;
+    width:33.3%;
+    height:100%;
+}
+
+.filter_layer_content_items {
+    list-style:none;
+    clear:both;
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    border-right: 1px solid #dddddd;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling:touch;
+}
+
+.filter_layer_content_item {
+    clear:both;
+    width:100%;
+    min-height:40px;
+    border-bottom:1px solid #dddddd;
+    /*border-right:1px solid #dddddd;*/
+}
+
+.filter_layer_content_item_anchor {
+    display:inline-block;
+    width:100%;
+    height:100%;
+    font-size:14px;
+    line-height:18px;
+    color:#565656;
+    padding:10px 15px 11px 15px;
+}
+
+.filter_layer_content_item_anchor:hover, .filter_layer_content_item_anchor:focus {
+    color:#565656;
+    text-decoration:none;
+}
+
+.filter_layer_content_item.active .filter_layer_content_item_anchor {
+    background: #565656;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+
+/* layer footer btn area */
 .filter_layer_footer_btn {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 40px;
-    background: #373a41;
+    background: #244aa0;
     z-index: 999999;
 }
 

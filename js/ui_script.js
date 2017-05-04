@@ -40,11 +40,50 @@ jQuery(function ($) {
         }).done(function (data) {
             if (data.length > 0) {
                 console.log(data);
+
+                areaObj.listCnt = parseInt( data.length, 10 );
+                areaObj.list = data;
             }
 
+            if( areaObj.listCnt > 0 ) {
+                areaObj.listHtml = '<ul class="filter_layer_content_items">';
+
+                areaObj.topObj = $('.filter_layer_content_groups').filter('[data-type="' + areaObj.type + '"]');
+                areaObj.obj = areaObj.topObj.find('.filter_layer_content_group').filter('[data-depth="1"]');
+
+                for (var i = 0; i < areaObj.listCnt; i++) {
+                    areaObj.text = '';
+
+                    if (areaObj.type == 'area') {
+                        areaObj.text = areaObj.list[i].name;
+                    } else if (areaObj.type == 'subway') {
+                        areaObj.text = areaObj.list[i].name;
+                    }
+
+                    if (areaObj.text) {
+                        areaObj.listHtml += '' +
+                            '<li class="filter_layer_content_item" data-idx="' + areaObj.list[i].id + '"><a href="#" class="filter_layer_content_item_anchor" data-idx="' + areaObj.list[i].id + '" data-parent-id="' + areaObj.list[i].parent_id + '" onclick="filter.areaFunc(\'' + areaObj.list[i].idx + '\', \'1\', \'' + areaObj.type + '\', \'' + areaObj.list[i].parent_id + '\');return false;">' + areaObj.text + '</a></li>' +
+                            '';
+                    }
+                } // for End
+
+                areaObj.listHtml+= '</ul">';
+
+                areaObj.obj.html( areaObj.listHtml );
+
+                if( areaObj.type == 'area' ) {
+                    areaObj.obj.find('.filter_layer_content_item').eq(0).find('.filter_layer_content_item_anchor').trigger('click');
+                } else if( areaObj.type == 'subway' ) {
+                    areaObj.obj.find('.filter_layer_content_item').eq(0).find('.filter_layer_content_item_anchor').trigger('click');
+                }
+            }
         });
     };
 
+
+    filter.areaFunc = function () {
+
+    };
 
     /* 레이어 필터 탭 변경 */
     filter.filterTabFunc = function (obj) {

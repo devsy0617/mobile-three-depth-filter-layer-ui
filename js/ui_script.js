@@ -41,11 +41,11 @@ jQuery(function ($) {
             if (data.length > 0) {
                 console.log(data);
 
-                areaObj.listCnt = parseInt( data.length, 10 );
+                areaObj.listCnt = parseInt(data.length, 10);
                 areaObj.list = data;
             }
 
-            if( areaObj.listCnt > 0 ) {
+            if (areaObj.listCnt > 0) {
                 areaObj.listHtml = '<ul class="filter_layer_content_items">';
 
                 areaObj.topObj = $('.filter_layer_content_groups').filter('[data-type="' + areaObj.type + '"]');
@@ -62,15 +62,16 @@ jQuery(function ($) {
 
                     if (areaObj.text) {
                         areaObj.listHtml += '' +
-                            '<li class="filter_layer_content_item" data-idx="' + areaObj.list[i].id + '"><a href="#" class="filter_layer_content_item_anchor" data-idx="' + areaObj.list[i].id + '" data-parent-id="' + areaObj.list[i].parent_id + '" onclick="filter.areaFunc(\'' + areaObj.list[i].idx + '\', \'1\', \'' + areaObj.type + '\', \'' + areaObj.list[i].parent_id + '\');return false;">' + areaObj.text + '</a></li>' +
+                            '<li class="filter_layer_content_item" data-idx="' + areaObj.list[i].id + '"><a href="#" class="filter_layer_content_item_anchor" data-idx="' + areaObj.list[i].id + '" data-parent-id="' + areaObj.list[i].id + '" onclick="filter.DetailTypeInit(\'' + areaObj.list[i].id + '\', \'1\', \'' + areaObj.type + '\', \'' + areaObj.list[i].id + '\');return false;">' + areaObj.text + '</a></li>' +
                             '';
                     }
                 } // for End
 
-                areaObj.listHtml+= '</ul">';
+                areaObj.listHtml += '</ul">';
+                areaObj.obj.html(areaObj.listHtml);
 
-                areaObj.obj.html( areaObj.listHtml );
 
+                // 시작하자마자 처음 값 초기화
                 if( areaObj.type == 'area' ) {
                     areaObj.obj.find('.filter_layer_content_item').eq(0).find('.filter_layer_content_item_anchor').trigger('click');
                 } else if( areaObj.type == 'subway' ) {
@@ -80,9 +81,9 @@ jQuery(function ($) {
         });
     };
 
-
-    filter.areaFunc = function () {
-
+    /* 상세 타입 명세 */
+    filter.DetailTypeInit = function ( id, depth, type, parent_id ) {
+        
     };
 
     /* 레이어 필터 탭 변경 */

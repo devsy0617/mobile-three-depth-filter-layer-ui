@@ -171,6 +171,7 @@ body {
     line-height:18px;
     color:#565656;
     padding:10px 15px 11px 15px;
+    text-decoration: none;
 }
 
 .filter_layer_content_item_anchor:hover, .filter_layer_content_item_anchor:focus {

@@ -19,24 +19,34 @@ jQuery(function ($) {
     /* 레이어 필터 선택결과 검색 */
     filter.layerSearch = function () {
         console.log(filter.TDL_AREA.getData());
-
         //console.log(filter.TDL_SUBWAY.getData());
 
         var totalTagArr = [];
         var areaData = filter.TDL_AREA.getData();
-
 
         for (var i = 0; i < areaData.listCnt; i++) { // 시
             if (areaData.list[i].count != 0) {
                 for (var j = 0; j < areaData.list[i].gugun.length; j++) { // 구군
                     if (areaData.list[i].gugun[j].count != 0) {
 
-                    } else { // 군만 선택 했을 때
-                        totalTagArr.push(areaData.list[i].gugun[j].name);
+                        for (var z = 0; z < areaData.list[i].gugun[j].dong.length; z++) { // 동
+                            if (areaData.list[i].gugun[j].dong[z].isActive == true) {
+                                totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name + ' ' + areaData.list[i].gugun[j].dong[z].name);
+                            }
+                        }
+
+                    } else if (areaData.list[i].gugun[j].count == 0) { // 군만 선택 했을 때
+                        if (areaData.list[i].gugun[j].isActive == true) {
+                            totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name);
+                        }
                     }
                 }
-            } else { // 시만 선택 했을 때
-                totalTagArr.push(areaData.list[i].name);
+            } else if (areaData.list[i].count == 0) { // 시만 선택 했을 때
+
+                if (areaData.list[i].isActive == true) {
+                    totalTagArr.push(areaData.list[i].name);
+                }
+
             }
         }
 
@@ -129,17 +139,49 @@ jQuery(function ($) {
 
         // 자동 카운트 갱신
         function setUpdate(key, isIncrease) {
-            var pathList = key.split(':');
-            var currentObject = areaObj.list; // 현재 리스트
+            var pathList = key.split(':'); // 선택한 root/gugun/dong 분리 리스트
+            var currentObject = areaObj.list; // 전체 리스트
 
-            if(pathList.length == 1) {
+            if (pathList.length == 1) { // root
                 var rootData = pathList[0].split('_');
                 var rootIndex = rootData[1];
 
-                console.log(currentObject);
-                var isRootActive = currentObject[rootIndex].isActive;
-                currentObject[rootIndex].isActive = !isRootActive;
+                var isRootActive = currentObject[rootIndex].isActive; // 전체 리스트의 몇번째(rootIndex) isActive
+                currentObject[rootIndex].isActive = !isRootActive; // true or false
                 return;
+
+            } else if (pathList.length == 2) { //gugun
+                var tmpArr = [];
+
+                for (var i = 0; i < pathList.length; i++) {
+                    var depthData = pathList[i].split('_');
+                    tmpArr[i] = depthData[1];
+                }
+
+                var isRootActive = currentObject[tmpArr[0]].isActive;
+                currentObject[tmpArr[0]].isActive = !isRootActive;
+
+                var isTwoDepthActive = currentObject[tmpArr[0]].gugun[tmpArr[1]].isActive;
+                currentObject[tmpArr[0]].gugun[tmpArr[1]].isActive = !isTwoDepthActive;
+
+            } else if (pathList.length == 3) { //dong
+
+                var tmpArr = [];
+
+                for (var i = 0; i < pathList.length; i++) {
+                    var depthData = pathList[i].split('_');
+                    tmpArr[i] = depthData[1];
+                }
+
+                var isRootActive = currentObject[tmpArr[0]].isActive;
+                currentObject[tmpArr[0]].isActive = !isRootActive;
+
+                var isTwoDepthActive = currentObject[tmpArr[0]].gugun[tmpArr[1]].isActive;
+                currentObject[tmpArr[0]].gugun[tmpArr[1]].isActive = !isTwoDepthActive;
+
+                var isThreeDepthActive = currentObject[tmpArr[0]].gugun[tmpArr[1]].dong[tmpArr[2]].isActive;
+                currentObject[tmpArr[0]].gugun[tmpArr[1]].dong[tmpArr[2]].isActive = !isThreeDepthActive;
+
             }
 
             var updateList = pathList.slice(0, pathList.length - 1); // count 수정해줘야할 리스트
@@ -159,8 +201,6 @@ jQuery(function ($) {
                 if (isIncrease) { //선택 되면 증가
                     currentObject.count++;
                     currentObject.isActive = true;
-
-
                 } else {
                     currentObject.count--; //해제 하면 감소
                     currentObject.isActive = false;

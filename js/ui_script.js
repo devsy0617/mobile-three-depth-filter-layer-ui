@@ -1,4 +1,5 @@
 var filter = {};
+var totalTagArr = [];
 
 jQuery(function ($) {
     /* 레이어 열기 */
@@ -13,15 +14,6 @@ jQuery(function ($) {
 
     /* 레이어 초기화 */
     filter.layerInit = function () {
-
-    };
-
-    /* 레이어 필터 선택결과 검색 */
-    filter.layerSearch = function () {
-        console.log(filter.TDL_AREA.getData());
-        //console.log(filter.TDL_SUBWAY.getData());
-
-        var totalTagArr = [];
         var areaData = filter.TDL_AREA.getData();
 
         for (var i = 0; i < areaData.listCnt; i++) { // 시
@@ -50,7 +42,52 @@ jQuery(function ($) {
             }
         }
 
-        console.log(totalTagArr);
+        totalTagArr.length = 0; // 검색 버튼 다시 눌렀을 때 초기화
+    };
+
+
+    /* 레이어 필터 선택결과 검색 */
+    filter.layerSearch = function () {
+        console.log(filter.TDL_AREA.getData());
+        //console.log(filter.TDL_SUBWAY.getData());
+
+        var areaData = filter.TDL_AREA.getData();
+
+        for (var i = 0; i < areaData.listCnt; i++) { // 시
+            if (areaData.list[i].count != 0) {
+                for (var j = 0; j < areaData.list[i].gugun.length; j++) { // 구군
+                    if (areaData.list[i].gugun[j].count != 0) {
+
+                        for (var z = 0; z < areaData.list[i].gugun[j].dong.length; z++) { // 동
+                            if (areaData.list[i].gugun[j].dong[z].isActive == true) {
+                                totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name + ' ' + areaData.list[i].gugun[j].dong[z].name);
+                            }
+                        }
+
+                    } else if (areaData.list[i].gugun[j].count == 0) { // 군만 선택 했을 때
+                        if (areaData.list[i].gugun[j].isActive == true) {
+                            totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name);
+                        }
+                    }
+                }
+            } else if (areaData.list[i].count == 0) { // 시만 선택 했을 때
+
+                if (areaData.list[i].isActive == true) {
+                    totalTagArr.push(areaData.list[i].name);
+                }
+
+            }
+        }
+
+
+        if (totalTagArr.length != 0) {
+            for (var item in totalTagArr) {
+                $('.result-filter-tag-area').append('<span>' + totalTagArr[item] + '</span>');
+            }
+        }
+
+        totalTagArr.length = 0; // 검색 버튼 다시 눌렀을 때 초기화
+        $('.filter_layer').fadeOut(300);
     };
 
 
@@ -186,7 +223,6 @@ jQuery(function ($) {
 
             var updateList = pathList.slice(0, pathList.length - 1); // count 수정해줘야할 리스트
 
-
             for (var i in updateList) {
                 var item = updateList[i];
                 var data = item.split('_');
@@ -226,7 +262,9 @@ jQuery(function ($) {
         }
     };
 
-    
+
+   
+
     // 시작할때 미리 로딩
     if ($('.filter_layer_content_groups').filter('[data-type="area"]').length) {
         filter.TDL_AREA = filter.typeInit('area');

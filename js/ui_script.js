@@ -9,42 +9,45 @@ jQuery(function ($) {
 
     /* 레이어 닫기 */
     filter.layerClose = function () {
+        filter.dataInit(); // 데이터 초기화
         $('.filter_layer').fadeOut(300);
     };
 
     /* 레이어 초기화 */
     filter.layerInit = function () {
+        filter.dataInit(); // 데이터 초기화
+    };
+
+    /* 데이터 초기화 */
+    filter.dataInit = function () {
         var areaData = filter.TDL_AREA.getData();
 
         for (var i = 0; i < areaData.listCnt; i++) { // 시
-            if (areaData.list[i].count != 0) {
-                for (var j = 0; j < areaData.list[i].gugun.length; j++) { // 구군
-                    if (areaData.list[i].gugun[j].count != 0) {
+            for (var j = 0; j < areaData.list[i].gugun.length; j++) { // 구군
 
-                        for (var z = 0; z < areaData.list[i].gugun[j].dong.length; z++) { // 동
-                            if (areaData.list[i].gugun[j].dong[z].isActive == true) {
-                                totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name + ' ' + areaData.list[i].gugun[j].dong[z].name);
-                            }
-                        }
-
-                    } else if (areaData.list[i].gugun[j].count == 0) { // 군만 선택 했을 때
-                        if (areaData.list[i].gugun[j].isActive == true) {
-                            totalTagArr.push(areaData.list[i].name + ' ' + areaData.list[i].gugun[j].name);
-                        }
-                    }
-                }
-            } else if (areaData.list[i].count == 0) { // 시만 선택 했을 때
-
-                if (areaData.list[i].isActive == true) {
-                    totalTagArr.push(areaData.list[i].name);
+                for (var z = 0; z < areaData.list[i].gugun[j].dong.length; z++) { // 동
+                    areaData.list[i].gugun[j].dong[z].isActive = false;
+                    areaData.list[i].gugun[j].dong[z].count = 0;
                 }
 
+                areaData.list[i].gugun[j].isActive = false;
+                areaData.list[i].gugun[j].count = 0;
             }
+
+            if (areaData.list[i].isActive == true) {
+                areaData.list[i].isActive = false;
+                areaData.list[i].count = 0;
+            }
+
         }
 
-        totalTagArr.length = 0; // 검색 버튼 다시 눌렀을 때 초기화
+        totalTagArr = []; // 검색 버튼 다시 눌렀을 때 초기화
     };
 
+    /* UX / UI 단 초기화 */
+    filter.drawListInit = function () {
+
+    };
 
     /* 레이어 필터 선택결과 검색 */
     filter.layerSearch = function () {
@@ -71,7 +74,6 @@ jQuery(function ($) {
                     }
                 }
             } else if (areaData.list[i].count == 0) { // 시만 선택 했을 때
-
                 if (areaData.list[i].isActive == true) {
                     totalTagArr.push(areaData.list[i].name);
                 }
@@ -262,8 +264,6 @@ jQuery(function ($) {
         }
     };
 
-
-   
 
     // 시작할때 미리 로딩
     if ($('.filter_layer_content_groups').filter('[data-type="area"]').length) {

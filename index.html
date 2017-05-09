@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/ui.css">
     <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/ui_script.js"></script>
+    <!--//<script type="text/javascript" src="js/ui_script.js"></script>-->
+    <script type="text/javascript" src="js/script.js"></script>
 </head>
 
 <body>
-<div class="layer-btn" onclick="filter.layerOpen();">three-depth-layer</div>
+<div class="layer-btn" onclick="gymUtils.view.layerOpen();">three-depth-layer</div>
 <div class="result-filter-tag-area"></div>
 
 <!-- 검색 레이어 시작 -->
@@ -85,13 +86,13 @@
     <div class="filter_layer_footer_btn">
         <ul class="filter_layer_footer_btn_items">
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor" onclick="filter.layerClose();return false;">닫기</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor" onclick="gymUtils.view.layerClose();return false;">닫기</a>
             </li>
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="filter.layerInit();return false;">초기화</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="gymUtils.view.layerInit();return false;">초기화</a>
             </li>
             <li class="filter_layer_footer_btn_item">
-                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="filter.layerSearch();return false;">검색</a>
+                <a href="#" class="filter_layer_footer_btn_item_anchor gray" onclick="gymUtils.view.layerSearch();return false;">검색</a>
             </li>
         </ul>
     </div>

@@ -10,8 +10,10 @@ $(function () {
         view: {}
     };
 
-    // 데이터 세팅
-    gymUtils.data.dataInit = function (type) {
+    /**
+     * data
+     */
+    gymUtils.data.dataInit = function (type) { // 데이터 세팅
         var resultUrl = 'http://localhost:3000/';
         type == 'area' ? resultUrl += 'area' : resultUrl += 'subway';
 
@@ -28,8 +30,12 @@ $(function () {
         });
     };
 
-    // set count , isActive, key
-    gymUtils.func.customData = function (type, data) {
+
+
+    /**
+     * func
+     */
+    gymUtils.func.customData = function (type, data) { // set count , isActive, key
 
         if (data.length > 0) {
 
@@ -93,8 +99,8 @@ $(function () {
         }
     };
 
-    // 데이터 업데이트 시켜주는 함수
-    gymUtils.func.setData = function (key, isIncrease, data, type) {
+
+    gymUtils.func.setData = function (key, isIncrease, data, type) { // 데이터 업데이트 시켜주는 함수
 
         var pathList = key.split(':'); // 선택한 root/gugun/dong 분리 리스트
         var currentObject = data; // 전체 리스트
@@ -166,7 +172,9 @@ $(function () {
         }
     };
 
-    /* view */
+    /**
+     * view
+     */
     gymUtils.view.typeInit = function () {
 
     };

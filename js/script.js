@@ -2,7 +2,8 @@ $(function () {
 
     window.gymUtils = gymUtils = {
         common: {
-            layer: $('.filter_layer')
+            layer: $('.filter_layer'),
+            tag: []
         },
         data: {},
         draw: {},
@@ -29,7 +30,6 @@ $(function () {
             }
         });
     };
-
 
 
     /**
@@ -172,11 +172,64 @@ $(function () {
         }
     };
 
+    gymUtils.func.initData = function (type, data) {
+
+        if (type == 'area') {
+
+            for (var i = 0; i < data.length; i++) { // 시
+                for (var j = 0; j < data[i].gugun.length; j++) { // 구군
+
+                    for (var z = 0; z < data[i].gugun[j].dong.length; z++) { // 동
+                        data[i].gugun[j].dong[z].isActive = false;
+                        data[i].gugun[j].dong[z].count = 0;
+                    }
+
+                    data[i].gugun[j].isActive = false;
+                    data[i].gugun[j].count = 0;
+                }
+
+                if (data[i].isActive == true) {
+                    data[i].isActive = false;
+                    data[i].count = 0;
+                }
+            }
+
+        } else {
+
+            for (var i = 0; i < data.length; i++) { // 시
+                for (var j = 0; j < data[i].line.length; j++) { // 구군
+
+                    for (var z = 0; z < data[i].line[j].station.length; z++) { // 동
+                        data[i].line[j].station[z].isActive = false;
+                        data[i].line[j].station[z].count = 0;
+                    }
+
+                    data[i].line[j].isActive = false;
+                    data[i].line[j].count = 0;
+                }
+
+                if (data[i].isActive == true) {
+                    data[i].isActive = false;
+                    data[i].count = 0;
+                }
+            }
+        }
+
+        gymUtils.common.tag = []; // 검색 버튼 다시 눌렀을 때 초기화
+
+    };
+
+
     /**
      * view
      */
-    gymUtils.view.typeInit = function () {
+    gymUtils.view.filterTabFunc = function (obj) { // 레이터 필터 탭 변경
+        if (obj) {
+            $('.filter_layer_tab_item').removeClass('active');
+            $(obj).closest('.filter_layer_tab_item').addClass('active');
 
+            $('.filter_layer_content_groups').hide().filter('[data-type="' + $(obj).attr('data-type') + '"]').show();
+        }
     };
 
     gymUtils.view.layerOpen = function () {
@@ -188,19 +241,12 @@ $(function () {
     };
 
     gymUtils.view.layerInit = function () {
-
+        gymUtils.func.initData('area', gymUtils.data.area);
+        gymUtils.func.initData('subway', gymUtils.data.subway);
     };
 
 
-    // 시작할때 미리 로딩
-    if ($('.filter_layer_content_groups').filter('[data-type="area"]').length) {
-        gymUtils.data.dataInit('area');
-    }
-    ;
-
-    if ($('.filter_layer_content_groups').filter('[data-type="subway"]').length) {
-        gymUtils.data.dataInit('subway');
-    }
-    ;
+    gymUtils.data.dataInit('area');
+    gymUtils.data.dataInit('subway');
 
 });

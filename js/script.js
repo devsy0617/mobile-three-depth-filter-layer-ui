@@ -3,7 +3,7 @@ $(function () {
     window.gymUtils = gymUtils = {
         common: {
             layer: $('.filter_layer'),
-            tag: []
+            tag: {}
         },
         data: {},
         draw: {},
@@ -114,7 +114,7 @@ $(function () {
         }
 
         if (type == 'area') {
-
+            tag = gymUtils.common.tag.area;
             depth.one = currentObject[indexArr[0]];
             depth.two = currentObject[indexArr[0]].gugun[indexArr[1]];
             depth.three = currentObject[indexArr[0]].gugun[indexArr[1]].dong[indexArr[2]];
@@ -129,7 +129,6 @@ $(function () {
 
 
         if (pathList.length == 1) { // root
-
             depth.one.isActive = !depth.one.isActive;
             return;
 
@@ -161,8 +160,8 @@ $(function () {
                 currentObject = currentObject[data[0]][index];
             }
 
-            if (isIncrease) { //선택 되면 증가
-                currentObject.count++;
+            if (isIncrease) {
+                currentObject.count++; //선택 되면 증가
                 currentObject.isActive = true;
             } else {
                 currentObject.count--; //해제 하면 감소
@@ -215,7 +214,7 @@ $(function () {
             }
         }
 
-        gymUtils.common.tag = []; // 검색 버튼 다시 눌렀을 때 초기화
+        gymUtils.common.tag = {}; // 검색 버튼 다시 눌렀을 때 초기화
 
     };
 
@@ -237,12 +236,17 @@ $(function () {
     };
 
     gymUtils.view.layerClose = function () {
+        // 선택했던거 제거
         gymUtils.common.layer.fadeOut(300);
     };
 
     gymUtils.view.layerInit = function () {
         gymUtils.func.initData('area', gymUtils.data.area);
         gymUtils.func.initData('subway', gymUtils.data.subway);
+    };
+
+    gymUtils.view.layerSearch = function () {
+        
     };
 
 

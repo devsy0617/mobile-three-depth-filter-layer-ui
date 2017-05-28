@@ -3,7 +3,8 @@ $(function () {
     window.gymUtils = gymUtils = {
         common: {
             layer: $('.filter_layer'),
-            tag: {}
+            tag: {},
+            tmpTag : {} // 최종 데이터가 아닌 임시 데이터 저장 변수
         },
         data: {},
         draw: {},
@@ -114,13 +115,11 @@ $(function () {
         }
 
         if (type == 'area') {
-            tag = gymUtils.common.tag.area;
             depth.one = currentObject[indexArr[0]];
             depth.two = currentObject[indexArr[0]].gugun[indexArr[1]];
             depth.three = currentObject[indexArr[0]].gugun[indexArr[1]].dong[indexArr[2]];
 
         } else {
-
             depth.one = currentObject[indexArr[0]];
             depth.two = currentObject[indexArr[0]].line[indexArr[1]];
             depth.three = currentObject[indexArr[0]].line[indexArr[1]].station[indexArr[2]];
@@ -167,7 +166,6 @@ $(function () {
                 currentObject.count--; //해제 하면 감소
                 currentObject.isActive = false;
             }
-
         }
     };
 
@@ -246,7 +244,9 @@ $(function () {
     };
 
     gymUtils.view.layerSearch = function () {
+
         
+        $('.filter_layer').fadeOut(300);
     };
 
 

@@ -6,7 +6,9 @@ $(function () {
             tag: {},
             tmpTag : {} // 최종 데이터가 아닌 임시 데이터 저장 변수
         },
-        data: {},
+        data: {
+            backup:{}
+        },
         draw: {},
         func: {},
         view: {}
@@ -114,28 +116,29 @@ $(function () {
             indexArr[i] = depthData[1];
         }
 
+
         if (type == 'area') {
             depth.one = currentObject[indexArr[0]];
-            depth.two = currentObject[indexArr[0]].gugun[indexArr[1]];
-            depth.three = currentObject[indexArr[0]].gugun[indexArr[1]].dong[indexArr[2]];
+            depth.two = depth.one.gugun[indexArr[1]] || null;
+            depth.three = depth.two?depth.two.dong[indexArr[2]] : null;
 
         } else {
             depth.one = currentObject[indexArr[0]];
-            depth.two = currentObject[indexArr[0]].line[indexArr[1]];
-            depth.three = currentObject[indexArr[0]].line[indexArr[1]].station[indexArr[2]];
+            depth.two = depth.one.line[indexArr[1]] || null;
+            depth.three = depth.two?depth.two.station[indexArr[2]] : null;
 
         }
 
 
         if (pathList.length == 1) { // root
             depth.one.isActive = !depth.one.isActive;
-            return;
+            //return;
 
         } else if (pathList.length == 2) { //gugun
 
             depth.one.isActive = !depth.one.isActive;
             depth.two.isActive = !depth.two.isActive;
-            return;
+            //return;
 
         } else if (pathList.length == 3) { //dong
 
@@ -231,10 +234,14 @@ $(function () {
 
     gymUtils.view.layerOpen = function () {
         gymUtils.common.layer.fadeIn(300);
+
+        gymUtils.data.backup.area = JSON.parse(JSON.stringify(gymUtils.data.area));
+        gymUtils.draw.area()
     };
 
     gymUtils.view.layerClose = function () {
         // 선택했던거 제거
+        gymUtils.data.area = JSON.parse(JSON.stringify(gymUtils.data.backup.area));
         gymUtils.common.layer.fadeOut(300);
     };
 
@@ -245,8 +252,113 @@ $(function () {
 
     gymUtils.view.layerSearch = function () {
 
-        
         $('.filter_layer').fadeOut(300);
+    };
+
+    gymUtils.view.resetLayer = function () {
+
+        for(var i in gymUtils.data.area) {
+            var item = gymUtils.data.area[i]
+
+            item.count = 0;
+            item.isActive = false;
+
+            for(var j in item.gugun) {
+                var gugunItem = item.gugun[j]
+
+                gugunItem.count = 0;
+                gugunItem.isActive = false;
+
+                for(var x in gugunItem.dong) {
+                    var dongItem = gugunItem.dong[x]
+
+                    dongItem.count = 0;
+                    dongItem.isActive = false;
+
+                }
+            }
+        }
+
+        gymUtils.draw.area()
+    };
+
+    gymUtils.draw.area = function(currentPath) {
+
+        var pathList = currentPath?currentPath.split(':'):['root_0'];
+
+        var pathData = {
+            root: pathList[0].split('_')[1],
+            gugun: pathList.length > 1?pathList[1].split('_')[1]:null
+        };
+
+        $('.filter_layer_content_group ul.filter_layer_content_items').html('');
+
+        for(var i in gymUtils.data.area) {
+            var item = gymUtils.data.area[i]
+
+            var form = $('template#layer-item-template').html()
+
+            form = form.replace('{active}', (item.isActive || item.count)?'active':'' );
+            form = form.replace(/{idx}/g, item.id).replace('{name}', item.name);
+            form = form.replace('{path}', item.key)
+
+            $('.filter_layer_content_group[data-depth="1"] ul.filter_layer_content_items').append(form)
+
+            if(i == pathData.root) {
+
+                for(var j in item.gugun) {
+                    var gugunItem = item.gugun[j]
+
+                    var form = $('template#layer-item-template').html()
+
+                    form = form.replace('{active}', (gugunItem.isActive || gugunItem.count)?'active':'' );
+                    form = form.replace(/{idx}/g, gugunItem.id).replace('{name}', gugunItem.name);
+                    form = form.replace('{path}', gugunItem.key)
+
+                    $('.filter_layer_content_group[data-depth="2"] ul.filter_layer_content_items').append(form)
+
+                    if(pathData.gugun && j == pathData.gugun) {
+                        for(var x in gugunItem.dong) {
+                            var dongItem = gugunItem.dong[x]
+
+                            var form = $('template#layer-item-template').html()
+
+                            form = form.replace('{active}', (dongItem.isActive || dongItem.count)?'active':'' );
+                            form = form.replace(/{idx}/g, dongItem.id).replace('{name}', dongItem.name);
+                            form = form.replace('{path}', dongItem.key)
+
+                            $('.filter_layer_content_group[data-depth="3"] ul.filter_layer_content_items').append(form)
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        $('ul.filter_layer_content_items > li').unbind('click');
+        $('ul.filter_layer_content_items > li').on('click', function(e) {
+
+            var path = $(e.currentTarget).find('a').data('path');
+
+            var isActive = $(e.currentTarget).hasClass('active')
+
+            var rootIndex = path.split(':')[0].split('_')[1];
+            var gugunIndex = path.split(':').length > 1?path.split(':')[1].split('_')[1]:0;
+
+            if(path.length == 1 && gymUtils.data.area[rootIndex].count == 0) {
+                gymUtils.func.setData(path, !isActive, gymUtils.data.area, 'area');
+            } else if(path.length == 2 && gymUtils.data.area[rootIndex].gugun[gugunIndex].count == 0) {
+                gymUtils.func.setData(path, !isActive, gymUtils.data.area, 'area');
+            } else if(path.length > 2) {
+                gymUtils.func.setData(path, !isActive, gymUtils.data.area, 'area');
+            }
+
+
+            gymUtils.draw.area(path)
+
+        });
     };
 
 
